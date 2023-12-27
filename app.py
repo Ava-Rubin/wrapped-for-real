@@ -32,6 +32,28 @@ def display_stats():
     return render_template("display-stats.html")
 
 #API Routes
+# @app.route('/upload', methods=['POST'])
+# def upload():
+#     data = request.form.get('csv_data')
+#     csv_reader = csv.DictReader(data.splitlines())
+
+#     for row in csv_reader:
+#         listen_time = int(row['msPlayed'])
+
+#         if listen_time >= 30000:
+#             try:
+#                 date_str = row['endTime']
+#                 end_time = datetime.strptime(date_str, '%Y-%m-%d %H:%M')  # Adjust the format accordingly
+#             except ValueError as e:
+#                 print(f"Error parsing date {date_str}: {e}")
+#                 continue  # Skip the current row if date parsing fails
+
+#             new_data = CSVData(endTime=end_time, artistName=row['artistName'], trackName=row['trackName'], msPlayed=listen_time)
+#             db.session.add(new_data)
+
+#     db.session.commit()
+
+#     return jsonify({'message': 'Data stored successfully'})
 @app.route("/upload", methods=['POST'])
 def upload():
     with app.app_context():
@@ -41,33 +63,49 @@ def upload():
     file = request.files['file']
     
     if file and file.filename.endswith('.csv'):
-        # Save the uploaded CSV file
-        file_path = os.path.join('uploads', file.filename)
-        file.save(file_path)
 
-        # Parse and store CSV data in the database
-        with open(file_path, 'r') as csv_file:
-            csv_reader = csv.DictReader(csv_file)
-            
-            for row in csv_reader:
-                listen_time = int(row['msPlayed'])
+        csv_data = file.read().decode('utf-8')
 
-                if listen_time >= 30000:
-                    date_str = row['endTime']
-                    end_time = datetime.strptime(date_str, '%Y-%m-%d %H:%M')
-                    formatted_date = end_time.date()
+        csv_reader = csv.DictReader(csv_data.splitlines())
+ 
+        for row in csv_reader:
+            listen_time = int(row['msPlayed'])
 
-                    new_data = CSVData(endTime=formatted_date, artistName=row['artistName'], trackName=row['trackName'], msPlayed=row['msPlayed'])
-                    db.session.add(new_data)
+            if listen_time >= 30000:
+                date_str = row['endTime']
+                end_time = datetime.strptime(date_str, '%Y-%m-%d %H:%M')
+                formatted_date = end_time.date()
+
+                new_data = CSVData(endTime=formatted_date, artistName=row['artistName'], trackName=row['trackName'], msPlayed=row['msPlayed'])
+                db.session.add(new_data)
 
         
         
         db.session.commit()
-        os.remove(file_path)  # Remove the uploaded CSV file after processing
+       
 
         return jsonify({'message': 'File uploaded and data stored successfully'})
 
     return jsonify({'message': 'Invalid file format'})
+
+    # data = request.form.get('csv_data')
+    # csv_reader = csv.DictReader(data.splitlines())
+
+    # for row in csv_reader:
+    #     listen_time = int(row['msPlayed'])
+
+    #     if listen_time >= 30000:
+    #         date_str = row['endTime']
+    #         end_time = datetime.strptime(date_str, '%Y-%m-%d %H:%M')
+    #         formatted_date = end_time.date()
+
+    #         new_data = CSVData(endTime=formatted_date, artistName=row['artistName'], trackName=row['trackName'], msPlayed=row['msPlayed'])
+    #         db.session.add(new_data)
+
+
+
+    # db.session.commit()     
+    # return jsonify({'message': 'File uploaded and data stored successfully'})
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -116,7 +154,6 @@ def daily_time():
     
     daily_time = db.session.query(CSVData.endTime, func.count().label('count')) \
         .group_by(CSVData.endTime) \
-        .limit(10)\
         .all()
 
     # Convert the result to a dictionary for easier JSON serialization
