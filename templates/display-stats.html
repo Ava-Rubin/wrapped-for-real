@@ -28,21 +28,35 @@
         <button onclick="getTopArtists()">Get Top Artists</button>
         <button onclick="getTopSongs()">Get Top Songs</button>
         <button onclick="getDailyCounts()">Get Daily Counts</button>
+        <button onclick="getTotals()">Get Totals</button>
+        <button onclick="getMonthlyArtists()">Get Monthly Artists</button>
+        <button onclick="getMonthlySongs()">Get Monthly Songs</button>
 
-        <h3>Top Artists</h3>
+        <h4>Totals</h4>
+        <ul id="totals">
+            
+        </ul>
+
+        <h4>Top Artists</h4>
         <ul id="topArtistsList">
             
         </ul>
 
-        <h3>Top Songs</h3>
+        <h4>Top Songs</h4>
         <ul id="topSongsList">
             
         </ul>
 
-        <h3>Some Days</h3>
+        <h4>Some Days</h4>
         <ul id="dailyCounts">
             
         </ul>
+
+        <h4>Top Monthly Artists</h4>
+        <div id="monthlyArtists"></div>
+
+        <h4>Top Monthly Songs</h4>
+        <div id="monthlySongs"></div>
 
         <div id="searchResults"></div>
 

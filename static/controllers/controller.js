@@ -116,3 +116,78 @@ function displayDailyCounts(results) {
         dailyCountsList.append(listItem);
     });
 }
+
+function getTotals(){
+
+    $.ajax({
+        type: 'GET',
+        url: '/total_stats',
+        success: function(response) {
+            displayTotals(response);
+        },
+        error: function(error) {
+            console.error('Error (totals):', error);
+        }
+    });
+}
+
+function displayTotals(results) {
+    var totals = $('#totals');
+    totals.empty();  // Clear existing list
+    
+    var listItem = $('<li>').text(results['artistCount'] + ' - ' + results['songCount'] + ' - ' + results['totalSong']+ ' - ' + results['totalMin']);
+    totals.append(listItem);
+    
+}
+
+function getMonthlyArtists(){
+
+    $.ajax({
+        type: 'GET',
+        url: '/monthly_artists',
+        success: function(response) {
+            displayMonthlyArtists(response);
+        },
+        error: function(error) {
+            console.error('Error (totals):', error);
+        }
+    });
+}
+
+function displayMonthlyArtists(data) {
+    for (var i = 0; i < data.length; i++) {
+        var monthlyArtistDiv = $('<div class="monthlyArtists">');
+        monthlyArtistDiv.append('<p>Month: ' + data[i].month + '</p>');
+        monthlyArtistDiv.append('<p>Year: ' + data[i].year + '</p>');
+        monthlyArtistDiv.append('<p>Artist Name: ' + data[i].artistName + '</p>');
+        monthlyArtistDiv.append('<p>Count: ' + data[i].count + '</p>');
+        $('#monthlyArtists').append(monthlyArtistDiv);
+    }
+    
+}
+
+function getMonthlySongs(){
+
+    $.ajax({
+        type: 'GET',
+        url: '/monthly_songs',
+        success: function(response) {
+            displayMonthlySongs(response);
+        },
+        error: function(error) {
+            console.error('Error (songs):', error);
+        }
+    });
+}
+
+function displayMonthlySongs(data) {
+    for (var i = 0; i < data.length; i++) {
+        var monthlySongDiv = $('<div class="monthlySongs">');
+        monthlySongDiv.append('<p>Month: ' + data[i].month + '</p>');
+        monthlySongDiv.append('<p>Year: ' + data[i].year + '</p>');
+        monthlySongDiv.append('<p>Song Name: ' + data[i].trackName + '</p>');
+        monthlySongDiv.append('<p>Count: ' + data[i].count + '</p>');
+        $('#monthlySongs').append(monthlySongDiv);
+    }
+    
+}

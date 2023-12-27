@@ -1,10 +1,11 @@
 from datetime import datetime
+import select
 from flask import Flask, redirect, render_template, request, jsonify, url_for
 from flask_sqlalchemy import SQLAlchemy
 import csv
 import os
 
-from sqlalchemy import func
+from sqlalchemy import AliasedReturnsRows, distinct, extract, func
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///listening-data.db'
@@ -16,7 +17,7 @@ class CSVData(db.Model):
     endTime = db.Column(db.Date, nullable=False)
     artistName = db.Column(db.String(255), nullable=False)
     trackName = db.Column(db.String(255), nullable=False)
-    msPlayed = db.Column(db.String(255), nullable=False)
+    msPlayed = db.Column(db.Integer, nullable=False)
 
 #Page Routes
 @app.route("/")
@@ -82,30 +83,26 @@ def search():
 
 @app.route('/top_artists', methods=['GET'])
 def top_artists():
-    # Use SQLAlchemy's func module to count occurrences and order by count in descending order
     artist_counts = db.session.query(CSVData.artistName, func.count().label('count')) \
         .group_by(CSVData.artistName) \
         .order_by(func.count().desc()) \
         .limit(10)\
         .all()
 
-    # Convert the result to a dictionary for easier JSON serialization
     result = [{'artistName': row.artistName, 'count': row.count} for row in artist_counts]
-
+    #TODO: get total time for each
     return jsonify(result)
 
 @app.route('/top_songs', methods=['GET'])
 def top_songs():
-    # Use SQLAlchemy's func module to count occurrences and order by count in descending order
     song_counts = db.session.query(CSVData.trackName, func.count().label('count')) \
         .group_by(CSVData.trackName) \
         .order_by(func.count().desc()) \
         .limit(20)\
         .all()
 
-    # Convert the result to a dictionary for easier JSON serialization
     result = [{'trackName': row.trackName, 'count': row.count} for row in song_counts]
-
+    #TODO: get total time for each
     return jsonify(result)
 
 @app.route('/daily_time', methods=['GET'])
@@ -122,7 +119,140 @@ def daily_time():
     
 @app.route('/total_stats', methods=['GET'])
 def total_stats():
-    return jsonify(0)
+    #Artists, Unique Songs, total songs, Total Time
+    unique_artists_count = db.session.query(func.count(distinct(CSVData.artistName))).scalar()
+    unique_songs_count = db.session.query(func.count(distinct(CSVData.trackName))).scalar()
+    total_songs_count = db.session.query(func.count(CSVData.trackName)).scalar()
+    total_ms_played = db.session.query(func.sum(CSVData.msPlayed)).scalar()
+
+    #total_min = total_ms_played / 60000;
+    total_min = round(total_ms_played/60000,0)
+
+    if(unique_artists_count > 1000):
+       # unique_artists_count /= 1000
+        unique_artists_count = round(unique_artists_count/1000,1)
+    if(unique_songs_count > 1000):
+      #  unique_songs_count /= 1000
+        unique_songs_count = round(unique_songs_count/1000,1)
+    if(total_songs_count > 1000):
+       # total_songs_count /= 1000
+        total_songs_count = round(total_songs_count/1000,1)
+
+    result = {'artistCount': unique_artists_count, 'songCount': unique_songs_count,'totalSong': total_songs_count, 'totalMin': total_min}
+    return jsonify(result)
+
+
+@app.route('/monthly_artists', methods=['GET'])
+def monthly_artists():
+    #query through data, each time month changes make a new list
+    # artist_counts = db.session.query(CSVData.artistName, func.count().label('count')) \
+    #     .group_by(CSVData.artistName) \
+    #     .order_by(func.count().desc()) \
+    #     .limit(3)\
+    #     .all()
+
+    # result = [{'trackName': row.trackName, 'count': row.count} for row in artist_counts]
+    
+    # return jsonify(result)
+    # monthly_artist_counts = db.session.query(
+    # extract('month', CSVData.endTime).label('month'),
+    # CSVData.artistName,
+    # func.count().label('count')
+    # ) \
+    # .group_by('month', CSVData.artistName) \
+    # .order_by('month', func.count().desc()) \
+    # .all()
+
+    # result = []
+
+    # for row in monthly_artist_counts:
+    #     # Convert the month integer to a string if needed
+    #     month_str = str(row.month)
+
+    #     # Append the result as a list of lists
+    #     result.append({
+    #         'month': month_str,
+    #         'artistName': row.artistName,
+    #         'count': row.count
+    #     })
+
+    # return jsonify(result)
+
+    cte = db.session.query(
+        extract('year', CSVData.endTime).label('year'),
+        extract('month', CSVData.endTime).label('month'),
+        CSVData.artistName,
+        func.count().label('count')
+    ) \
+    .group_by('year', 'month', CSVData.artistName) \
+    .order_by('year', 'month', func.count().desc()) \
+    .cte('monthly_counts')
+
+    monthly_artist_counts = db.session.query(
+        cte.c.year,
+        cte.c.month,
+        cte.c.artistName,
+        cte.c.count
+    ) \
+    .group_by(cte.c.year, cte.c.month) \
+    .all()
+
+    result = []
+
+    for row in monthly_artist_counts:
+    # Convert the month and year integers to strings if needed
+        month_str = str(row.month)
+        year_str = str(row.year)
+
+        # Append the result as a list of dictionaries
+        result.append({
+            'year': year_str,
+            'month': month_str,
+            'artistName': row.artistName,
+            'count': row.count
+        })
+
+    return jsonify(result)
+
+@app.route('/monthly_songs', methods=['GET'])
+def monthly_songs():
+    cte = db.session.query(
+        extract('year', CSVData.endTime).label('year'),
+        extract('month', CSVData.endTime).label('month'),
+        CSVData.trackName,
+        func.count().label('count')
+    ) \
+    .group_by('year', 'month', CSVData.trackName) \
+    .order_by('year', 'month', func.count().desc()) \
+    .cte('monthly_counts')
+
+    monthly_songs_counts = db.session.query(
+        cte.c.year,
+        cte.c.month,
+        cte.c.trackName,
+        cte.c.count
+    ) \
+    .group_by(cte.c.year, cte.c.month) \
+    .all()
+
+    result = []
+
+    for row in monthly_songs_counts:
+    # Convert the month and year integers to strings if needed
+        month_str = str(row.month)
+        year_str = str(row.year)
+
+        # Append the result as a list of dictionaries
+        result.append({
+            'year': year_str,
+            'month': month_str,
+            'trackName': row.trackName,
+            'count': row.count
+        })
+
+    return jsonify(result)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
