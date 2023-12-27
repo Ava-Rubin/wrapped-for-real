@@ -3,14 +3,26 @@
 
     <head>
         <link rel="stylesheet" href="../static/styles/global-styles.css">
+        <link rel="stylesheet" href="../static/styles/home-styles.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;800&display=swap" rel="stylesheet">
     </head>
 
     <body>
-        <h1>Welcome to Wrapped For Real</h1>
+        <div class="border">
+            <h1>WRAPPED</h1>
+            <h3>(for real)</h3>
+            <form action="{{ url_for('getting_started') }}" method="post">
+                <button type="submit">Get Started</button>
+            </form>
 
-        <form action="{{ url_for('getting_started') }}" method="post">
-            <button type="submit">Get Started</button>
-        </form>
+        </div>
+   
+        
+
+        
 
     </body>
 </html>

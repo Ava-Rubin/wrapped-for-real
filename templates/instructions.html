@@ -4,6 +4,11 @@
 
     <head>
         <link rel="stylesheet" href="../static/styles/global-styles.css">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;800&display=swap" rel="stylesheet">
+
         <script
         src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
@@ -13,21 +18,28 @@
 
     <body>
 
-        <h1>STEP 1: ...</h1>
-        <h1>STEP 2: ...</h1>
-        <h1>STEP 3: ...</h1>
+        <div class="border">
 
-        <h1>UPLOAD YOUR DATA HERE</h1>
+            <h2>STEP 1: ...</h1>
+                <h2>STEP 2: ...</h1>
+                <h2>STEP 3: ...</h1>
+        
+                <h3>UPLOAD YOUR DATA HERE</h1>
+        
+        
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <input type="file" name="file" id="file" accept=".csv">
+                    <button type="button" onclick="upload()">Upload CSV</button>
+                </form>
+        
+                <form action="{{ url_for('display_stats') }}" method="post">
+                    <button type="submit">Get my Stats</button>
+                </form>
+
+        </div>
 
 
-        <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" name="file" id="file" accept=".csv">
-            <button type="button" onclick="upload()">Upload CSV</button>
-        </form>
 
-        <form action="{{ url_for('display_stats') }}" method="post">
-            <button type="submit">Get my Stats</button>
-        </form>
 
     </body>
 </html>
