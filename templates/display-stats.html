@@ -1,0 +1,45 @@
+<!--This is the page where user uploads data-->
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="../static/styles/global-styles.css">
+        <script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+        <script src="../static/controllers/controller.js"></script>
+    </head>
+
+    <body>
+
+        <form action="{{ url_for('getting_started') }}" method="post">
+            <button type="submit">Upload Page</button>
+        </form>
+
+        <input type="text" id="searchQuery" placeholder="Search">
+        <button onclick="search()">Search</button>
+
+        <button onclick="getTopArtists()">Get Top Artists</button>
+        <button onclick="getTopSongs()">Get Top Songs</button>
+        <button onclick="getDailyCounts()">Get Daily Counts</button>
+
+        <h1>Top Artists</h1>
+        <ul id="topArtistsList">
+            
+        </ul>
+
+        <h1>Top Songs</h1>
+        <ul id="topSongsList">
+            
+        </ul>
+
+        <h1>Some Days</h1>
+        <ul id="dailyCounts">
+            
+        </ul>
+
+        <div id="searchResults"></div>
+
+    </body>
+</html>

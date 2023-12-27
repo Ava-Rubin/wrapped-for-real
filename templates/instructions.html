@@ -1,0 +1,33 @@
+<!--This is the page where user uploads data-->
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="../static/styles/global-styles.css">
+        <script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+        <script src="../static/controllers/controller.js"></script>
+    </head>
+
+    <body>
+
+        <h1>STEP 1: ...</h1>
+        <h1>STEP 2: ...</h1>
+        <h1>STEP 3: ...</h1>
+
+        <h1>UPLOAD YOUR DATA HERE</h1>
+
+
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" id="file" accept=".csv">
+            <button type="button" onclick="upload()">Upload CSV</button>
+        </form>
+
+        <form action="{{ url_for('display_stats') }}" method="post">
+            <button type="submit">Get my Stats</button>
+        </form>
+
+    </body>
+</html>
