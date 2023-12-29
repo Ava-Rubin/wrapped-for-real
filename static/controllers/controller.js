@@ -118,15 +118,72 @@ function displayDailyCounts(results) {
 }
 
 function getTotals(){
-
     $.ajax({
         type: 'GET',
         url: '/total_stats',
         success: function(response) {
-            displayTotals(response);
+            setTimeout(function(){
+                getTotalArtistCount();
+            },500)
+            
+            //displayTotals(response);
         },
         error: function(error) {
             console.error('Error (totals):', error);
+        }
+    });
+}
+
+function getTotalArtistCount(){
+    $.ajax({
+        type: 'GET',
+        url: '/total_stats',
+        success: function(response) {
+            const obj = document.getElementById("artist-counter");
+            animateValue(obj, 0,response['artistCount'],3000);
+            setTimeout(function(){
+                getTotalSongCount();
+            },4000)
+        },
+        error: function(error) {
+            
+            console.error('Error (totals):', error);
+            
+        }
+    });
+}
+
+function getTotalSongCount(){
+    $.ajax({
+        type: 'GET',
+        url: '/total_stats',
+        success: function(response) {
+            const obj = document.getElementById("song-counter");
+            animateValue(obj, 0,response['totalSong'],3000);
+            setTimeout(function(){
+                getTotalMinCount();
+            },4000)
+        },
+        error: function(error) {
+            
+            console.error('Error (totals):', error);
+            
+        }
+    });
+}
+
+function getTotalMinCount(){
+    $.ajax({
+        type: 'GET',
+        url: '/total_stats',
+        success: function(response) {
+            const obj = document.getElementById("minute-counter");
+            animateValue(obj, 0,response['totalMin'],3000);
+        },
+        error: function(error) {
+            
+            console.error('Error (totals):', error);
+            
         }
     });
 }
@@ -191,3 +248,18 @@ function displayMonthlySongs(data) {
     }
     
 }
+
+function animateValue(obj, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      obj.innerHTML = Math.floor(progress * (end - start) + start);
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }
+  
+

@@ -32,6 +32,10 @@ def getting_started():
 def display_stats():
     return render_template("display-stats.html")
 
+@app.route("/overview", methods=['POST'])
+def overview():
+    return render_template("overview.html")
+
 #API Routes
 @app.route("/upload", methods=['POST'])
 def upload():
@@ -128,15 +132,15 @@ def total_stats():
     #total_min = total_ms_played / 60000;
     total_min = round(total_ms_played/60000,0)
 
-    if(unique_artists_count > 1000):
-       # unique_artists_count /= 1000
-        unique_artists_count = round(unique_artists_count/1000,1)
-    if(unique_songs_count > 1000):
-      #  unique_songs_count /= 1000
-        unique_songs_count = round(unique_songs_count/1000,1)
-    if(total_songs_count > 1000):
-       # total_songs_count /= 1000
-        total_songs_count = round(total_songs_count/1000,1)
+    # if(unique_artists_count > 1000):
+    #    # unique_artists_count /= 1000
+    #     unique_artists_count = round(unique_artists_count/1000,1)
+    # if(unique_songs_count > 1000):
+    #   #  unique_songs_count /= 1000
+    #     unique_songs_count = round(unique_songs_count/1000,1)
+    # if(total_songs_count > 1000):
+    #    # total_songs_count /= 1000
+    #     total_songs_count = round(total_songs_count/1000,1)
 
     result = {'artistCount': unique_artists_count, 'songCount': unique_songs_count,'totalSong': total_songs_count, 'totalMin': total_min}
     return jsonify(result)
