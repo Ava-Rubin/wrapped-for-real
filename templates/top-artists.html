@@ -1,4 +1,3 @@
-<!--This is the page where user uploads data-->
 <!DOCTYPE html>
 <html>
 
@@ -9,6 +8,8 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;800&display=swap" rel="stylesheet">
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
         <script
         src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
@@ -16,30 +17,23 @@
         <script src="../static/controllers/controller.js"></script>
     </head>
 
-    <body>
-
-        <div class="gradient-border">
-
-            <h2>STEP 1: ...</h1>
-                <h2>STEP 2: ...</h1>
-                <h2>STEP 3: ...</h1>
-        
-                <h3>UPLOAD YOUR DATA HERE</h1>
+    <body onload="getTopArtists()">
         
         
-                <form id="uploadForm" enctype="multipart/form-data">
-                    <input type="file" name="file" id="file" accept=".csv">
-                    <button type="button" onclick="upload()">Upload CSV</button>
-                </form>
-        
-                <form action="{{ url_for('overview') }}" method="post">
-                    <button type="submit">Get my Stats</button>
-                </form>
-
+        <div style="text-align: center;">
+            <h2 class="gradient-text" >TOP ARTISTS</h2>
+            <h3 style="margin-bottom: 0; opacity: .9;">you listened to</h3>
         </div>
+        
+        <ul id="topArtistsList">
+            
+        </ul>
 
+        <canvas id="myChart" style="width:100%;max-width:80vw"></canvas>
 
-
+        <form action="{{ url_for('overview') }}" method="post">
+            <button type="submit">BACK</button>
+        </form>
 
     </body>
 </html>

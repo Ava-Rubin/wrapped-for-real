@@ -22,6 +22,9 @@ class CSVData(db.Model):
 #Page Routes
 @app.route("/")
 def home():
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
     return render_template("home.html")
 
 @app.route("/getting-started", methods=['POST'])
@@ -36,12 +39,14 @@ def display_stats():
 def overview():
     return render_template("overview.html")
 
+@app.route("/artists", methods=['POST'])
+def artists():
+    return render_template("top-artists.html")
+
 #API Routes
 @app.route("/upload", methods=['POST'])
 def upload():
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
+    
     
     file = request.files['file']
     

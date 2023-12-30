@@ -45,29 +45,7 @@ function displayResults(results) {
     }
 }
 
-function getTopArtists(){
 
-    $.ajax({
-        type: 'GET',
-        url: '/top_artists',
-        success: function(response) {
-            displayTopArtists(response);
-        },
-        error: function(error) {
-            console.error('Error (top artists):', error);
-        }
-    });
-}
-
-function displayTopArtists(results) {
-    var topArtistsList = $('#topArtistsList');
-    topArtistsList.empty();  // Clear existing list
-
-    results.forEach(function (artist) {
-        var listItem = $('<li>').text(artist['artistName'] + ' - ' + artist['count'] + ' plays');
-        topArtistsList.append(listItem);
-    });
-}
 
 function getTopSongs(){
 
@@ -123,67 +101,20 @@ function getTotals(){
         url: '/total_stats',
         success: function(response) {
             setTimeout(function(){
-                getTotalArtistCount();
+                const obj = document.getElementById("artist-counter");
+                animateValue(obj, 0,response['artistCount'],3000);
             },500)
-            
-            //displayTotals(response);
-        },
-        error: function(error) {
-            console.error('Error (totals):', error);
-        }
-    });
-}
-
-function getTotalArtistCount(){
-    $.ajax({
-        type: 'GET',
-        url: '/total_stats',
-        success: function(response) {
-            const obj = document.getElementById("artist-counter");
-            animateValue(obj, 0,response['artistCount'],3000);
             setTimeout(function(){
-                getTotalSongCount();
-            },4000)
-        },
-        error: function(error) {
-            
-            console.error('Error (totals):', error);
-            
-        }
-    });
-}
-
-function getTotalSongCount(){
-    $.ajax({
-        type: 'GET',
-        url: '/total_stats',
-        success: function(response) {
-            const obj = document.getElementById("song-counter");
-            animateValue(obj, 0,response['totalSong'],3000);
+                const obj = document.getElementById("song-counter");
+                animateValue(obj, 0,response['totalSong'],3000);
+            },4500)
             setTimeout(function(){
-                getTotalMinCount();
-            },4000)
+                const obj = document.getElementById("minute-counter");
+                animateValue(obj, 0,response['totalMin'],3000);
+            },8500)
         },
         error: function(error) {
-            
             console.error('Error (totals):', error);
-            
-        }
-    });
-}
-
-function getTotalMinCount(){
-    $.ajax({
-        type: 'GET',
-        url: '/total_stats',
-        success: function(response) {
-            const obj = document.getElementById("minute-counter");
-            animateValue(obj, 0,response['totalMin'],3000);
-        },
-        error: function(error) {
-            
-            console.error('Error (totals):', error);
-            
         }
     });
 }
@@ -262,4 +193,63 @@ function animateValue(obj, start, end, duration) {
     window.requestAnimationFrame(step);
   }
   
+
+  function getTopArtists(){
+
+    $.ajax({
+        type: 'GET',
+        url: '/top_artists',
+        success: function(response) {
+            artistChart(response);
+        },
+        error: function(error) {
+            console.error('Error (top artists):', error);
+        }
+    });
+}
+
+function displayTopArtists(results) {
+    var topArtistsList = $('#topArtistsList');
+    topArtistsList.empty();  // Clear existing list
+
+    results.forEach(function (artist) {
+        var listItem = $('<li>').text(artist['artistName'] + ' - ' + artist['count'] + ' plays');
+        topArtistsList.append(listItem);
+    });
+}
+
+
+function artistChart(results){
+    var artistNames = [];
+    var artistPlays = [];
+    results.forEach(function (artist) {
+        artistNames.push(artist['artistName']);
+        artistPlays.push(parseInt(artist['count']));
+        
+    });
+
+    var barColors = [
+    "#FF6B00",
+    "#04E762",
+    "#FFBE00",
+    "#008BF8",
+    "#A933F2",
+    "#F23333",
+    "#DC00D3",
+    "#00FFD1",
+    "#00D1FF",
+    "#DC0073"
+    ];
+
+    new Chart("myChart", {
+    type: "doughnut",
+    data: {
+        labels: artistNames,
+        datasets: [{
+        backgroundColor: barColors,
+        data: artistPlays,
+        }]
+    }
+    });
+}
 

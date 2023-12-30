@@ -18,16 +18,10 @@
 
     <body onload="getTotals()">
 
-       <div style="text-align: center;">
-        <h2 class="gradient-text">
-            IN THE LAST YEAR...  
-        </h2>
-        <h3 style="font-style: italic; margin-bottom: 0; opacity: .9;">
-            you listened to
-        </h3>
-       </div>
-        
-
+        <div style="text-align: center;">
+            <h2 class="gradient-text">IN THE LAST YEAR...</h2>
+            <h3 style="font-style: italic; margin-bottom: 0; opacity: .9;">you listened to</h3>
+        </div>
         
         <div class="counters">
             <div>
@@ -35,36 +29,26 @@
                     <h1 style="color: #FFBE00;">
                         <div id="artist-counter">0</div>
                     </h1>
-                    <h3>
-                        artists
-                    </h3>
+                    <h3>artists</h3>
                 </div>
 
                 <div class="counter">
                     <h1 style="color: #DC0073;">
                         <div id="song-counter">0</div>
                     </h1>
-                    <h3>
-                        songs
-                    </h3>
+                    <h3>songs</h3>
                 </div>
 
                 <div class="counter">
                     <h1 style="color: #008BF8;">
                         <div id="minute-counter">0</div>
                     </h1>
-                    <h3>
-                        minutes
-                    </h3>
+                    <h3>minutes</h3>
                 </div>
-
-                
             </div>
-
-
         </div>
-
-        
-
+        <form action="{{ url_for('artists') }}" method="post">
+            <button type="submit">NEXT</button>
+        </form>
     </body>
 </html>
