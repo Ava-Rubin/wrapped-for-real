@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 import csv
 import os
 
-from sqlalchemy import AliasedReturnsRows, distinct, extract, func
+from sqlalchemy import distinct, extract, func
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///listening-data.db'
