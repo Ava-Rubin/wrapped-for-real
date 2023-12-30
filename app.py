@@ -22,13 +22,13 @@ class CSVData(db.Model):
 #Page Routes
 @app.route("/")
 def home():
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
     return render_template("home.html")
 
 @app.route("/getting-started", methods=['POST'])
 def getting_started():
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
     return render_template("instructions.html")
 
 @app.route("/display-stats", methods=['POST'])
