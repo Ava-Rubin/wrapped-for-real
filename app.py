@@ -43,10 +43,20 @@ def overview():
 def artists():
     return render_template("top-artists.html")
 
+@app.route("/songs", methods=['POST'])
+def songs():
+    return render_template("top-songs.html")
+
+@app.route("/monthly", methods=['POST'])
+def monthly():
+    return render_template("monthly-review.html")
+
 #API Routes
 @app.route("/upload", methods=['POST'])
 def upload():
-    
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
     
     file = request.files['file']
     
@@ -75,6 +85,16 @@ def upload():
         return jsonify({'message': 'File uploaded and data stored successfully'})
 
     return jsonify({'message': 'Invalid file format'})
+
+
+@app.route('/first_month', methods=['GET'])
+def first_month():
+    first_row = CSVData.query.order_by(CSVData.endTime).first()
+    first_month = func.extract('month', first_row.endTime).label('first_month')
+    result = CSVData.query.add_columns(first_month).first()
+        
+    return jsonify({'first_month': result.first_month})
+
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -114,10 +134,11 @@ def top_songs():
     #TODO: get total time for each
     return jsonify(result)
 
-@app.route('/daily_time', methods=['GET'])
-def daily_time():
-    
+@app.route('/daily_time/<int:month>', methods=['GET'])
+def daily_time(month):
+
     daily_time = db.session.query(CSVData.endTime, func.count().label('count')) \
+        .filter(func.extract('month', CSVData.endTime) == month) \
         .group_by(CSVData.endTime) \
         .all()
 

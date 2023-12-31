@@ -1,3 +1,7 @@
+
+
+ 
+
 function upload() {
     var formData = new FormData($('#uploadForm')[0]);
 
@@ -53,6 +57,7 @@ function getTopSongs(){
         type: 'GET',
         url: '/top_songs',
         success: function(response) {
+            songChart(response);
             displayTopSongs(response);
         },
         error: function(error) {
@@ -71,16 +76,97 @@ function displayTopSongs(results) {
     });
 }
 
-function getDailyCounts(){
 
+
+function getDailyCounts(getMonth){
+
+    var title;
+
+    switch(getMonth) {
+        case 1:
+            title = 'JANUARY'
+            break;
+        case 2:
+          // code block
+            title = 'FEBRUARY'
+            break;
+        case 3:
+        // code block
+            title = 'MARCH'
+            break;
+        case 4:
+            title = 'APRIL'
+            break;
+        case 5:
+            // code block
+            title = 'MAY'
+            break;
+        case 6:
+        // code block
+            title = 'JUNE'
+            break;
+        case 7:
+            title = 'JULY'
+            break;
+        case 8:
+          // code block
+            title = 'AUGUST'
+            break;
+        case 9:
+        // code block
+            title = 'SEPTEMBER'
+            break;
+        case 10:
+            title = 'OCTOBER'
+            break;
+        case 11:
+            // code block
+            title = 'NOVEMBER'
+            break;
+        case 12:
+        // code block
+            title = 'DECEMBER'
+            break;
+        default:
+            title = 'NaN'
+      }
+
+    document.getElementById("month-title").innerHTML = title;
     $.ajax({
         type: 'GET',
-        url: '/daily_time',
+        url: '/daily_time/' + encodeURIComponent(getMonth),
         success: function(response) {
             displayDailyCounts(response);
+            monthlyChart(response);
         },
         error: function(error) {
             console.error('Error (daily counts):', error);
+        }
+    });
+}
+
+function nextMonth(){
+    if(currMonth == 12){
+        currMonth = 1;
+    } else {
+        currMonth++;
+    }
+    
+    getDailyCounts(currMonth);
+}
+
+let currMonth = 0;
+
+function firstMonth(){
+    $.ajax({
+        type: 'GET',
+        url: '/first_month',
+        success: function(response) {
+            currMonth = parseInt(response.first_month);
+            getDailyCounts(currMonth);
+        },
+        error: function(error) {
+            console.error('Error (upload):', error);
         }
     });
 }
@@ -194,12 +280,13 @@ function animateValue(obj, start, end, duration) {
   }
   
 
-  function getTopArtists(){
+function getTopArtists(){
 
     $.ajax({
         type: 'GET',
         url: '/top_artists',
         success: function(response) {
+            displayTopArtists(response);
             artistChart(response);
         },
         error: function(error) {
@@ -212,9 +299,23 @@ function displayTopArtists(results) {
     var topArtistsList = $('#topArtistsList');
     topArtistsList.empty();  // Clear existing list
 
+    var barColors = [
+        "#A95EBB",
+        "#ED445C",
+        "#F9734C",
+        "#FF9636",
+        "#FFAD18",
+        "#EBC208",
+        "#D4CA28",
+        "#99DA5E",
+        "#6EC89F",
+        "#9483B1"
+    ];
+    let pos = 0;
     results.forEach(function (artist) {
-        var listItem = $('<li>').text(artist['artistName'] + ' - ' + artist['count'] + ' plays');
+        var listItem = $('<li>').text(artist['artistName'] + ' - ' + artist['count'] + ' plays').css('color',barColors[pos]);
         topArtistsList.append(listItem);
+        pos++;
     });
 }
 
@@ -229,17 +330,30 @@ function artistChart(results){
     });
 
     var barColors = [
-    "#FF6B00",
-    "#04E762",
-    "#FFBE00",
-    "#008BF8",
-    "#A933F2",
-    "#F23333",
-    "#DC00D3",
-    "#00FFD1",
-    "#00D1FF",
-    "#DC0073"
+        "#A95EBB",
+        "#ED445C",
+        "#F9734C",
+        "#FF9636",
+        "#FFAD18",
+        "#EBC208",
+        "#D4CA28",
+        "#99DA5E",
+        "#6EC89F",
+        "#9483B1"
     ];
+
+    // var barColors = [
+    // "#FF6B00",
+    // "#04E762",
+    // "#FFBE00",
+    // "#008BF8",
+    // "#A933F2",
+    // "#F23333",
+    // "#DC00D3",
+    // "#00FFD1",
+    // "#00D1FF",
+    // "#DC0073"
+    // ];
 
     new Chart("myChart", {
     type: "doughnut",
@@ -249,7 +363,250 @@ function artistChart(results){
         backgroundColor: barColors,
         data: artistPlays,
         }]
-    }
-    });
+    },
+    options: {
+        // Global options for the entire chart
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+            padding: {
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0
+            },
+        },
+        // ...
+        legend: {
+            position: 'right',
+            display: false
+        },
+        datasets: {
+          doughnut: {
+            // Options that apply to all doughnut datasets
+            cutout: '80',
+            borderColor: '#010B13',
+            borderWidth:4,
+            hoverOffset: 5
+            // ...
+          },
+          pie: {
+            // Options that apply to all pie datasets
+            // ...
+          }
+        },
+    
+        elements: {
+          arc: {
+            // Options that apply to all arc elements
+            // ...
+            hoverOffset: 4,
+          }
+        }
+      }
+     
+  });
+
+    
 }
 
+function songChart(results){
+    var songNames = [];
+    var songPlays = [];
+    results.forEach(function (song) {
+        songNames.push(song['trackName']);
+        songPlays.push(parseInt(song['count']));
+        
+    });
+
+    var barColors = [
+        "#A95EBB",
+        "#ED445C",
+        "#F9734C",
+        "#FF9636",
+        "#FFAD18",
+        "#EBC208",
+        "#D4CA28",
+        "#99DA5E",
+        "#6EC89F",
+        "#9483B1",
+        "#A95EBB",
+        "#ED445C",
+        "#F9734C",
+        "#FF9636",
+        "#FFAD18",
+        "#EBC208",
+        "#D4CA28",
+        "#99DA5E",
+        "#6EC89F",
+        "#9483B1",
+        "#A95EBB",
+        "#ED445C",
+        "#F9734C",
+        "#FF9636",
+        "#FFAD18",
+        "#EBC208",
+        "#D4CA28",
+        "#99DA5E",
+        "#6EC89F",
+        "#9483B1"
+    ];
+
+    // var barColors = [
+    // "#FF6B00",
+    // "#04E762",
+    // "#FFBE00",
+    // "#008BF8",
+    // "#A933F2",
+    // "#F23333",
+    // "#DC00D3",
+    // "#00FFD1",
+    // "#00D1FF",
+    // "#DC0073"
+    // ];
+
+    new Chart("mySongChart", {
+    type: "bar",
+    data: {
+        labels: songNames,
+        datasets: [{
+        backgroundColor: barColors,
+        data: songPlays,
+        }]
+    },
+    options: {
+        // Global options for the entire chart
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: {
+            padding: {
+              left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0
+            },
+        },
+        // ...
+        legend: {
+            position: 'right',
+            display: false
+        },
+        datasets: {
+          doughnut: {
+            // Options that apply to all doughnut datasets
+            cutout: '80',
+            borderColor: '#010B13',
+            borderWidth:4,
+            hoverOffset: 5
+            // ...
+          },
+          pie: {
+            // Options that apply to all pie datasets
+            // ...
+          }
+        },
+    
+        elements: {
+          arc: {
+            // Options that apply to all arc elements
+            // ...
+            hoverOffset: 4,
+          }
+        }
+      }
+     
+  });
+
+    
+}
+
+function monthlyChart(results){
+    var days = [];
+    var plays = [];
+    results.forEach(function (day) {
+        days.push(day['endTime']);
+        plays.push(parseInt(day['count']));
+        
+    });
+
+    var barColors = [
+        "#A95EBB",
+        "#ED445C",
+        "#F9734C",
+        "#FF9636",
+        "#FFAD18",
+        "#EBC208",
+        "#D4CA28",
+        "#99DA5E",
+        "#6EC89F",
+        "#9483B1",
+        "#A95EBB",
+        "#ED445C",
+        "#F9734C",
+        "#FF9636",
+        "#FFAD18",
+        "#EBC208",
+        "#D4CA28",
+        "#99DA5E",
+        "#6EC89F",
+        "#9483B1",
+        "#A95EBB",
+        "#ED445C",
+        "#F9734C",
+        "#FF9636",
+        "#FFAD18",
+        "#EBC208",
+        "#D4CA28",
+        "#99DA5E",
+        "#6EC89F",
+        "#9483B1",
+        "#6EC89F",
+        "#9483B1",
+        "#A95EBB",
+        "#ED445C",
+        "#F9734C",
+        "#FF9636",
+        "#FFAD18",
+        "#EBC208",
+        "#D4CA28",
+        "#99DA5E",
+        "#6EC89F",
+        "#9483B1"
+    ];
+
+    // var barColors = [
+    // "#FF6B00",
+    // "#04E762",
+    // "#FFBE00",
+    // "#008BF8",
+    // "#A933F2",
+    // "#F23333",
+    // "#DC00D3",
+    // "#00FFD1",
+    // "#00D1FF",
+    // "#DC0073"
+    // ];
+
+    new Chart("monthlyChart", {
+    type: "line",
+    data: {
+        labels:  days,
+        datasets: [{
+        pointBackgroundColor: barColors,
+        fill: false,
+        borderColor: 'white',
+        borderWidth: 1,
+        lineTension: 0,
+        data: plays,
+        }]
+    },
+    options: {
+        legend: {
+            display: false
+        }
+    }
+     
+  });
+
+    
+}

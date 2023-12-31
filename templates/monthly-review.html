@@ -3,7 +3,6 @@
 
     <head>
         <link rel="stylesheet" href="../static/styles/global-styles.css">
-        <link rel="stylesheet" href="../static/styles/top-artists.css">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,30 +17,38 @@
         <script src="../static/controllers/controller.js"></script>
     </head>
 
-    <body onload="getTopArtists()">
+    <body onload="firstMonth()">
         
         
-        <div style="text-align: center;">
-            <h2 class="gradient-text" >TOP ARTISTS</h2>
-            <!-- <h3 style="margin-bottom: 0; opacity: .9;">you listened to</h3> -->
-        </div>
-        
-        <div style="display: grid; grid-template-columns: 55% 45%; margin-top: 1rem">
-                <div style="display: inline-block; padding: 3rem 0;">
-                    <canvas id="myChart" style="width: 100%;"></canvas>
-                </div>
-                <div class="artist-list">
-                    <ul id="topArtistsList"></ul>
-                </div>
-        </div>
 
-        <form action="{{ url_for('overview') }}" method="post">
+        <div style="text-align: center;">
+            <h2 id="month-title" class="gradient-text" >JANUARY</h2>
+        </div>
+        
+        <!-- <ul id="dailyCounts">
+            
+        </ul> -->
+
+    
+         
+          
+            
+    
+ 
+
+        <canvas id="monthlyChart" style="width: 100%;max-width: 90vw;"></canvas>
+
+        
+
+        <form action="{{ url_for('songs') }}" method="post">
             <button type="submit">BACK</button>
         </form>
 
-        <form action="{{ url_for('songs') }}" method="post">
+        <!-- <form action="{{ url_for('songs') }}" method="post">
             <button type="submit">NEXT</button>
-        </form>
+        </form> -->
+
+        <button onclick="nextMonth()">NEXT</button>
 
     </body>
 </html>

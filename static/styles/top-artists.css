@@ -1,0 +1,14 @@
+.artist-list {
+    display: inline-block;
+    padding: 7% 0;
+
+    font-size: 1.5rem;
+}
+
+ul {
+    list-style:circle;
+    list-style-position: inside;
+    font-family: "Inter";
+    font-weight:500;
+    line-height: 3.25rem;
+}
