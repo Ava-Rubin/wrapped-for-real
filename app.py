@@ -127,7 +127,7 @@ def top_songs():
     song_counts = db.session.query(CSVData.trackName, func.count().label('count')) \
         .group_by(CSVData.trackName) \
         .order_by(func.count().desc()) \
-        .limit(20)\
+        .limit(10)\
         .all()
 
     result = [{'trackName': row.trackName, 'count': row.count} for row in song_counts]

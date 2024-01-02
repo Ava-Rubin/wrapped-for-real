@@ -4,10 +4,12 @@
 
     <head>
         <link rel="stylesheet" href="../static/styles/global-styles.css">
+        <link rel="stylesheet" href="../static/styles/instructions.css">
+
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900;1000&family=Playfair+Display:ital,wght@1,500;1,800&display=swap" rel="stylesheet">
 
         <script
         src="https://code.jquery.com/jquery-3.7.1.js"
@@ -18,28 +20,27 @@
 
     <body>
 
-        <div class="gradient-border">
+        <div class="border">
 
-            <h2>STEP 1: ...</h1>
-                <h2>STEP 2: ...</h1>
-                <h2>STEP 3: ...</h1>
-        
-                <h3>UPLOAD YOUR DATA HERE</h1>
-        
-        
+            <h1>1</h1>
+            <h1>2</h1>
+            <h1>3</h1>
+            <h1>4</h1>
+            <h1>5</h1>
+    
+            <div style="text-align: center; margin-top: 2rem;">
                 <form id="uploadForm" enctype="multipart/form-data">
-                    <input type="file" name="file" id="file" accept=".csv">
-                    <button type="button" onclick="upload()">Upload CSV</button>
+                    <label for="file">
+                        SELECT FILE
+                        <input type="file" name="file" id="file" accept=".csv" style="display: none;">
+                    </label>
+                    <button type="button" onclick="upload()">UPLOAD FILE</button>
                 </form>
         
                 <form action="{{ url_for('overview') }}" method="post">
-                    <button type="submit">Get my Stats</button>
+                    <button style="margin-top: 10px;" type="submit">SHOW ME MY STATS</button>
                 </form>
-
+            </div>
         </div>
-
-
-
-
     </body>
 </html>
