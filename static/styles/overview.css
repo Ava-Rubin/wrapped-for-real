@@ -1,3 +1,7 @@
+body {
+    background-color: #99AFC2;
+}
+
 .counters > div {
     text-align: center;
     max-width: 100vw;
@@ -5,4 +9,61 @@
     display: grid;
     grid-template-columns: repeat(3,1fr);
     gap: 0em 3%;
+}
+
+.counter{
+    display: inline-flex;
+    align-items: baseline;
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-weight: 800;
+    color: #99AFC2;
+    font-size: 4rem;
+    
+}
+
+h2 {
+    color: #577590;
+    font-weight: 1000;
+    margin: 1.5rem 2rem 0rem 4rem;
+    line-height: 10rem;
+    font-size: 12rem;
+}
+
+h3 {
+    font-family: "Playfair Display", serif;
+    font-weight: 500;
+    font-size: 5rem;
+    line-height: 0;
+    color: #577590;
+}
+
+.title{
+    text-align: left;
+    background-color: #577590;
+    width: fit-content;
+    padding: 0px 50px 10px;
+    border-top-right-radius: 100px;
+    border-bottom-right-radius: 100px;
+}
+
+button {
+    font-family: "Cairo";
+    padding: 0 25px;
+    font-weight: 800;
+    font-size: 2rem;
+    background-color: #577590;
+    color: #99AFC2;
+    border-width: 0;
+    border-radius: 100px;
+    position: fixed;
+    bottom: 50px;
+    right: 70px;
+}
+
+button:hover{
+    background-color: #F3CA40;
+    color: #FAE9B2;
 }

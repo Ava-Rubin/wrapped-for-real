@@ -1,7 +1,3 @@
-
-
- 
-
 function upload() {
     var formData = new FormData($('#uploadForm')[0]);
 
@@ -298,24 +294,11 @@ function getTopArtists(){
 function displayTopArtists(results) {
     var topArtistsList = $('#topArtistsList');
     topArtistsList.empty();  // Clear existing list
-
-    var barColors = [
-        "#A95EBB",
-        "#ED445C",
-        "#F9734C",
-        "#FF9636",
-        "#FFAD18",
-        "#EBC208",
-        "#D4CA28",
-        "#99DA5E",
-        "#6EC89F",
-        "#9483B1"
-    ];
-    let pos = 0;
+ 
     results.forEach(function (artist) {
-        var listItem = $('<li>').text(artist['artistName'] + ' - ' + artist['count'] + ' plays').css('color',barColors[pos]);
+        var listItem = $('<li>').text(artist['artistName'] + ' - ' + artist['count'] + ' plays');
         topArtistsList.append(listItem);
-        pos++;
+      
     });
 }
 
@@ -330,44 +313,30 @@ function artistChart(results){
     });
 
     var barColors = [
-        "#A95EBB",
-        "#ED445C",
-        "#F9734C",
-        "#FF9636",
-        "#FFAD18",
-        "#EBC208",
-        "#D4CA28",
-        "#99DA5E",
-        "#6EC89F",
-        "#9483B1"
+        "#90BA78",
+        "#688F8E",
+        "#577590",
+        "#B36B82",
+        "#D16161",
+        "#D78A76",
+        "#B77966",
+        "#F08A4B",
+        "#F2A541",
+        "#F3CA40"
     ];
-
-    // var barColors = [
-    // "#FF6B00",
-    // "#04E762",
-    // "#FFBE00",
-    // "#008BF8",
-    // "#A933F2",
-    // "#F23333",
-    // "#DC00D3",
-    // "#00FFD1",
-    // "#00D1FF",
-    // "#DC0073"
-    // ];
 
     new Chart("myChart", {
     type: "doughnut",
     data: {
         labels: artistNames,
         datasets: [{
-        backgroundColor: barColors,
-        data: artistPlays,
+            backgroundColor: barColors,
+            data: artistPlays,
         }]
     },
     options: {
-        // Global options for the entire chart
         responsive: true,
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         layout: {
             padding: {
               left: 0,
@@ -376,35 +345,23 @@ function artistChart(results){
               bottom: 0
             },
         },
-        // ...
         legend: {
             position: 'right',
-            display: false
+            display: true,
+            labels: {
+                fontFamily: "Cairo",
+                fontColor: "#8B5241",
+                fontStyle: "bold",
+                fontSize: 32
+            }
         },
         datasets: {
           doughnut: {
-            // Options that apply to all doughnut datasets
-            cutout: '80',
-            borderColor: '#010B13',
-            borderWidth:4,
-            hoverOffset: 5
-            // ...
+            borderColor: '#FAE9B2',
+            borderWidth:10,
           },
-          pie: {
-            // Options that apply to all pie datasets
-            // ...
-          }
         },
-    
-        elements: {
-          arc: {
-            // Options that apply to all arc elements
-            // ...
-            hoverOffset: 4,
-          }
-        }
       }
-     
   });
 
     
@@ -420,104 +377,66 @@ function songChart(results){
     });
 
     var barColors = [
-        "#A95EBB",
-        "#ED445C",
-        "#F9734C",
-        "#FF9636",
-        "#FFAD18",
-        "#EBC208",
-        "#D4CA28",
-        "#99DA5E",
-        "#6EC89F",
-        "#9483B1",
-        "#A95EBB",
-        "#ED445C",
-        "#F9734C",
-        "#FF9636",
-        "#FFAD18",
-        "#EBC208",
-        "#D4CA28",
-        "#99DA5E",
-        "#6EC89F",
-        "#9483B1",
-        "#A95EBB",
-        "#ED445C",
-        "#F9734C",
-        "#FF9636",
-        "#FFAD18",
-        "#EBC208",
-        "#D4CA28",
-        "#99DA5E",
-        "#6EC89F",
-        "#9483B1"
+        "#577590",
+        "#688F8E",
+        "#B77966",
+        "#D16161",
+        "#E8BBB0",
+        "#B77966",
+        "#F6C079",
+        "#FAE9B2",
+        "#688F8E",
+        "#C8DCBC",
+        "#577590",
+        "#688F8E",
+        "#B77966",
+        "#D16161",
+        "#E8BBB0",
+        "#B77966",
+        "#F6C079",
+        "#FAE9B2",
+        "#688F8E",
+        "#C8DCBC",
     ];
 
-    // var barColors = [
-    // "#FF6B00",
-    // "#04E762",
-    // "#FFBE00",
-    // "#008BF8",
-    // "#A933F2",
-    // "#F23333",
-    // "#DC00D3",
-    // "#00FFD1",
-    // "#00D1FF",
-    // "#DC0073"
-    // ];
-
     new Chart("mySongChart", {
-    type: "bar",
+    type: "horizontalBar",
     data: {
         labels: songNames,
         datasets: [{
-        backgroundColor: barColors,
-        data: songPlays,
+            backgroundColor: barColors,
+            data: songPlays,
         }]
     },
     options: {
-        // Global options for the entire chart
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-            padding: {
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0
-            },
-        },
-        // ...
         legend: {
-            position: 'right',
             display: false
         },
-        datasets: {
-          doughnut: {
-            // Options that apply to all doughnut datasets
-            cutout: '80',
-            borderColor: '#010B13',
-            borderWidth:4,
-            hoverOffset: 5
-            // ...
-          },
-          pie: {
-            // Options that apply to all pie datasets
-            // ...
-          }
-        },
-    
-        elements: {
-          arc: {
-            // Options that apply to all arc elements
-            // ...
-            hoverOffset: 4,
-          }
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display:false
+                },
+                ticks: {
+                    display: false, 
+                }
+            }],
+            yAxes: [{
+                
+                gridLines: {
+                    display:false
+                },
+                ticks: {
+                    fontSize:20,
+                    fontColor: "white",
+                    fontFamily: "Cairo",
+                    fontStyle: "bold"
+                }
+
+            }]
         }
       }
-     
   });
-
-    
 }
 
 function monthlyChart(results){

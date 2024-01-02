@@ -1,0 +1,20 @@
+body {
+    background-color: #CEA1AF;
+}
+
+h1 {
+    color: #B36B82;
+    line-height: 7rem;
+    position: fixed;
+    bottom: 10px;
+    left: 20px;
+    font-size: 7rem;
+}
+
+.subtext{
+    font-size: 3rem;
+    font-family: 'Playfair Display';
+    line-height: 0;
+    font-weight: 100;
+    padding: 1rem;
+}

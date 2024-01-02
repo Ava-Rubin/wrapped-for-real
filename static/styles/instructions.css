@@ -1,0 +1,74 @@
+body {
+    background-color: #F2A541;
+    color: #FAE9B2;
+}
+
+.border {
+    position: fixed;
+    top: 3%;
+    left: 3%;
+    width: 94%;
+    height: 94%;
+    box-sizing: border-box; /* Include border in the element's total width and height */
+    pointer-events: all; /* Allow clicks to go through the rectangle */
+    text-align: left; 
+    justify-content: center;
+   
+    border-radius: 40px;
+    border: 6px solid #FAE9B2;
+    background-color: transparent;
+}
+
+h1{
+    font-weight: 1000;
+    line-height: 3.5rem;
+    font-size: 7rem;
+    padding-left: 7%;
+}
+
+input {
+    font-family: "Cairo";
+}
+
+input #file {
+    background-color: #FAE9B2;
+}
+
+button {
+    font-family: "Cairo";
+    padding: 0 25px;
+    font-weight: 800;
+    font-size: 2rem;
+    background-color: #FAE9B2;
+    color: #F2A541;
+    border-width: 0;
+    border-radius: 100px;
+}
+
+button:hover{
+    background-color: #F3CA40;
+    color: #FAE9B2;
+}
+
+label:hover{
+    background-color: #F3CA40;
+    color: #FAE9B2;
+}
+
+label {
+    cursor: pointer;
+    padding: 0 25px;
+    border: 0;
+    background-color: #FAE9B2;
+    margin-right: 10px;
+    
+    
+    font-family: "Cairo";
+  
+    font-weight: 800;
+    font-size: 2rem;
+    background-color: #FAE9B2;
+    color: #F2A541;
+ 
+    border-radius: 100px;
+}

@@ -3,11 +3,11 @@
 
     <head>
         <link rel="stylesheet" href="../static/styles/global-styles.css">
-        <link rel="stylesheet" href="../static/styles/top-artists.css">
+        <link rel="stylesheet" href="../static/styles/top-songs.css">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900;1000&family=Playfair+Display:ital,wght@1,500;1,800&display=swap" rel="stylesheet">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 
@@ -20,33 +20,19 @@
 
     <body onload="getTopSongs()">
         
+        <canvas id="mySongChart" style="width: 100%;max-width: 95vw;"></canvas>
         
-        <div style="text-align: center;">
-            <h2 class="gradient-text" >TOP SONGS</h2>
-            <!-- <h3 style="margin-bottom: 0; opacity: .9;">you listened to</h3> -->
-        </div>
-        
-        <div style="display: grid; grid-template-columns: 70 30%; margin-top: 1rem">
-            
-                <div style="display: inline-block; padding: 3rem 0;">
-                    <canvas id="mySongChart" style="width: 100%;"></canvas>
-                </div>
-                <div class="song-list">
-                    <ul id="topSongsList"></ul>
-                </div>
-          
-            
-    
-        </div>
-
+        <h1>
+            THE <a style="font-size: 12rem; line-height: 0;">BEST</a> SONGS <a class="subtext">(according to you)</a>
+        </h1>
 
         
 
-        <form action="{{ url_for('artists') }}" method="post">
+        <form style="position: fixed; right: 0; bottom: 350px" action="{{ url_for('artists') }}" method="post">
             <button type="submit">BACK</button>
         </form>
 
-        <form action="{{ url_for('monthly') }}" method="post">
+        <form style="position: fixed; right: 0; bottom: 300px;" action="{{ url_for('monthly') }}" method="post">
             <button type="submit">NEXT</button>
         </form>
 

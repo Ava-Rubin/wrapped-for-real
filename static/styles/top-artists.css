@@ -1,14 +1,52 @@
+body {
+    background-color: #FAE9B2;
+    color: #8B5241;
+}
+
 .artist-list {
     display: inline-block;
-    padding: 7% 0;
+    padding: 0 0;
 
     font-size: 1.5rem;
+    
 }
 
 ul {
-    list-style:circle;
+    list-style:none;
     list-style-position: inside;
-    font-family: "Inter";
-    font-weight:500;
+    font-family: "Cairo";
+    font-weight:700;
     line-height: 3.25rem;
+}
+
+h1 {
+    font-size: 6.5rem;
+    line-height: 0rem;
+    color: #F2A541;
+}
+
+.title{
+    transform-origin: 0 0;
+    transform: rotate(-90deg);
+    position: fixed;
+    bottom: 30px;
+    left:50px;
+    display: inline-block;
+}
+
+button {
+    font-family: "Cairo";
+    padding: 0 25px;
+    font-weight: 800;
+    font-size: 2rem;
+    background-color: #F2A541;
+    color: #FAE9B2;
+    border-width: 0;
+    border-radius: 100px;
+
+}
+
+button:hover{
+    background-color: #F3CA40;
+    color: #FAE9B2;
 }
